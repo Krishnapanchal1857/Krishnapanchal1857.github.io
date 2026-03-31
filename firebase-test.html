@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Firebase Debug — SAKSHAR</title>
+<style>
+  body{font-family:monospace;background:#0B1F3A;color:#fff;padding:30px;font-size:14px}
+  h2{color:#FF6B00;margin-bottom:20px}
+  .box{background:rgba(255,255,255,.07);border-radius:10px;padding:18px;margin-bottom:16px;border-left:4px solid #FF6B00}
+  .ok{border-left-color:#22c55e;color:#86efac}
+  .err{border-left-color:#ef4444;color:#fca5a5}
+  .info{border-left-color:#3b82f6;color:#93c5fd}
+  pre{white-space:pre-wrap;word-break:break-all;font-size:12px;margin-top:8px;opacity:.8}
+  button{background:#FF6B00;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;cursor:pointer;margin-bottom:20px;font-family:monospace}
+  button:hover{background:#FF8C35}
+</style>
+</head>
+<body>
+<h2>🔥 SAKSHAR — Firebase Debug Test</h2>
+<button onclick="runTest()">▶ Run Full Test</button>
+<div id="log"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, where, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCVnBlmeYmy2NEoPxixrquXgdmLju7v1j4",
+    authDomain: "sakshar-e5c00.firebaseapp.com",
+    projectId: "sakshar-e5c00",
+    storageBucket: "sakshar-e5c00.firebasestorage.app",
+    messagingSenderId: "495731533454",
+    appId: "1:495731533454:web:2fcb2f4e4d04494cec4bdf",
+    measurementId: "G-Z9JJCJ3KEM"
+  };
+
+  let db;
+  const log = document.getElementById('log');
+
+  function addLog(msg, type='info', detail='') {
+    const d = document.createElement('div');
+    d.className = 'box ' + type;
+    d.innerHTML = msg + (detail ? '<pre>' + detail + '</pre>' : '');
+    log.appendChild(d);
+  }
+
+  window.runTest = async function() {
+    log.innerHTML = '';
+
+    // Step 1: Init Firebase
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      addLog('✅ Step 1: Firebase initialized successfully', 'ok');
+    } catch(e) {
+      addLog('❌ Step 1 FAILED: Firebase init error', 'err', e.message);
+      return;
+    }
+
+    // Step 2: Try reading the notes collection (no filters)
+    addLog('⏳ Step 2: Reading "notes" collection (no filters)...', 'info');
+    try {
+      const snap = await getDocs(collection(db, 'notes'));
+      if (snap.empty) {
+        addLog('⚠️ Step 2: Collection is EMPTY — no documents found at all!', 'err',
+          'You need to add at least one document to the "notes" collection in Firestore.');
+      } else {
+        addLog('✅ Step 2: Found ' + snap.size + ' document(s) in "notes" collection!', 'ok');
+        snap.docs.forEach((d, i) => {
+          addLog('📄 Document ' + (i+1) + ': ' + d.id, 'ok', JSON.stringify(d.data(), null, 2));
+        });
+      }
+    } catch(e) {
+      addLog('❌ Step 2 FAILED: Cannot read "notes" collection', 'err',
+        e.message + '\n\nFIX: Go to Firestore → Rules tab → set:\n\nrules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /notes/{doc} {\n      allow read: if true;\n    }\n  }\n}');
+      return;
+    }
+
+    // Step 3: Filter by dept=12sci
+    addLog('⏳ Step 3: Filtering by dept = "12sci"...', 'info');
+    try {
+      const q = query(collection(db, 'notes'), where('dept', '==', '12sci'));
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        addLog('⚠️ Step 3: No documents with dept="12sci"', 'err',
+          'Make sure you added dept field with value exactly: 12sci (no spaces, lowercase)');
+      } else {
+        addLog('✅ Step 3: Found ' + snap.size + ' note(s) for 12sci!', 'ok');
+      }
+    } catch(e) {
+      addLog('❌ Step 3 FAILED: Filter query error', 'err', e.message);
+    }
+
+    // Step 4: Add a sample note automatically
+    addLog('⏳ Step 4: Adding a sample test note to Firestore...', 'info');
+    try {
+      const ref = await addDoc(collection(db, 'notes'), {
+        dept: '12sci',
+        subject: 'Physics',
+        title: 'AUTO TEST — Newton\'s Laws Summary',
+        author: 'SAKSHAR Debug Tool',
+        fileUrl: 'https://www.google.com',
+        previewUrl: 'https://www.google.com',
+        approved: true,
+        uploadedAt: serverTimestamp()
+      });
+      addLog('✅ Step 4: Test note added! ID: ' + ref.id, 'ok',
+        'Now open resources.html, click Notes tab, select 12th Science — your note should appear!');
+    } catch(e) {
+      addLog('❌ Step 4 FAILED: Cannot write to Firestore', 'err',
+        e.message + '\n\nThis means write rules are blocked — that\'s OK.\nThe test note was NOT added.\nYou need to add it manually in Firestore console.');
+    }
+
+    addLog('🏁 Test complete! Read the results above.', 'info');
+  };
+</script>
+</body>
+</html>

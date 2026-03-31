@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Feedback — SAKSHAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--sf:#FF6B00;--sf2:#FF8C35;--sfp:#FFF3EB;--nv:#0B1F3A;--nvm:#162E52;--cr:#FDFAF5;--g1:#F5F5F5;--g2:#E8E8E8;--g4:#9A9A9A;--g6:#555;--green:#059669}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind',sans-serif;background:var(--g1);color:var(--nv)}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(11,31,58,.97);backdrop-filter:blur(14px);height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:2.5px solid var(--sf)}
+.nav-logo{font-family:'Baloo 2',cursive;font-size:1.75rem;font-weight:800;color:#fff;letter-spacing:2px;text-decoration:none}.nav-logo span{color:var(--sf)}
+.nav-links{display:flex;gap:4px;align-items:center}
+.page-band{background:linear-gradient(135deg,var(--nv) 0%,var(--nvm) 100%);padding:32px 60px;margin-top:68px}
+.page-band-title{font-family:'Baloo 2',cursive;font-size:1.9rem;font-weight:800;color:#fff;margin-bottom:4px}
+.page-band-sub{color:rgba(255,255,255,.45);font-size:.9rem}
+.content{padding:52px 60px;max-width:760px;margin:0 auto}
+.fb-box{background:#fff;border-radius:20px;padding:44px;box-shadow:0 4px 20px rgba(11,31,58,.1)}
+.form-label{display:block;font-size:.77rem;font-weight:700;color:var(--g6);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.form-input,.form-select{width:100%;border:1.5px solid var(--g2);border-radius:10px;padding:12px 14px;font-family:'Hind',sans-serif;font-size:.92rem;color:var(--nv);outline:none;transition:border-color .18s;background:#fff;margin-bottom:16px}
+.form-input:focus,.form-select:focus{border-color:var(--sf)}
+textarea.form-input{resize:vertical;min-height:90px;line-height:1.6}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{margin-bottom:0}
+.star-row{display:flex;gap:8px;margin-bottom:8px}
+.star-btn{background:none;border:none;font-size:2.2rem;cursor:pointer;color:#E0E0E0;transition:all .15s;line-height:1;padding:0}
+.star-btn.active{color:#F5A623}
+.star-btn:hover{transform:scale(1.2);color:#F5A623}
+.btn-full{width:100%;padding:13px;border-radius:10px;font-family:'Hind',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;border:none;background:var(--sf);color:#fff;transition:all .2s;margin-top:8px}
+.btn-full:hover{background:var(--sf2)}
+.success-screen{display:none;text-align:center;padding:40px}
+.main-footer{background:var(--nv);color:rgba(255,255,255,.38);padding:24px 44px;font-size:.82rem}
+@media(max-width:700px){.content{padding:32px 20px}.fb-box{padding:28px 20px}.form-row{grid-template-columns:1fr}.page-band{padding:24px 20px}}
+</style>
+</head>
+<body>
+<nav class="navbar"><a href="index.html" class="nav-logo">SAK<span>SHAR</span></a><div id="main-nav-links" class="nav-links"></div></nav>
+<div class="page-band"><div class="page-band-title">💬 Share Your Feedback</div><div class="page-band-sub">Help us make SAKSHAR better for every student in India</div></div>
+<div class="content">
+  <div class="fb-box">
+    <div id="fb-form">
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:var(--nv);margin-bottom:6px">We Value Your Opinion 🙏</h2>
+      <p style="color:var(--g6);font-size:.93rem;margin-bottom:28px">Your feedback shapes SAKSHAR. Tell us what's working, what's missing, and what would help you most.</p>
+      <div class="form-row" style="margin-bottom:16px">
+        <div class="form-group"><label class="form-label">Your Name *</label><input type="text" class="form-input" id="fb-name" placeholder="Your full name" style="margin-bottom:0"></div>
+        <div class="form-group"><label class="form-label">Department *</label><select class="form-select" id="fb-dept" style="margin-bottom:0"><option value="">Select department</option></select></div>
+      </div>
+      <div style="margin-bottom:16px">
+        <label class="form-label">Overall Rating *</label>
+        <div class="star-row">
+          <button class="star-btn" onclick="setRating(1)">★</button><button class="star-btn" onclick="setRating(2)">★</button>
+          <button class="star-btn" onclick="setRating(3)">★</button><button class="star-btn" onclick="setRating(4)">★</button>
+          <button class="star-btn" onclick="setRating(5)">★</button>
+        </div>
+        <div id="rating-label" style="font-size:.82rem;color:var(--g4);height:18px">Click to rate</div>
+      </div>
+      <div><label class="form-label">What do you like most?</label><textarea class="form-input" id="fb-like" placeholder="e.g., Organized resources, SMRITI AI, PYQ papers..."></textarea></div>
+      <div><label class="form-label">What should we improve?</label><textarea class="form-input" id="fb-improve" placeholder="e.g., Add more subjects, mobile app, better search..."></textarea></div>
+      <div class="form-row" style="margin-bottom:16px">
+        <div class="form-group"><label class="form-label">Category</label><select class="form-select" id="fb-category" style="margin-bottom:0"><option value="">Select category</option><option>Resources Quality</option><option>Website Design</option><option>SMRITI AI Feature</option><option>Missing Subjects/Departments</option><option>Technical Bug</option><option>General Suggestion</option></select></div>
+        <div class="form-group"><label class="form-label">Would you recommend us?</label><select class="form-select" id="fb-recommend" style="margin-bottom:0"><option value="">Select</option><option value="yes">Yes, definitely! 👍</option><option value="maybe">Maybe</option><option value="not-yet">Not yet</option></select></div>
+      </div>
+      <button class="btn-full" onclick="submitFeedback()">📤 Submit Feedback</button>
+    </div>
+    <div class="success-screen" id="fb-success">
+      <div style="font-size:4.5rem;margin-bottom:18px">🎉</div>
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1.8rem;font-weight:800;color:var(--nv);margin-bottom:10px">Thank You!</h2>
+      <p style="color:var(--g6);line-height:1.7;margin-bottom:24px">Your feedback has been recorded and sent to our team. It truly helps us make SAKSHAR better for every student in India. 🙏</p>
+      <a href="dashboard.html" style="display:inline-flex;padding:12px 28px;background:var(--sf);color:#fff;border-radius:10px;font-weight:700;text-decoration:none">Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+<footer class="main-footer"><div id="main-footer"></div></footer>
+<script>
+var DEPT_LIST=[{id:'12sci',icon:'🔬',label:'12th Science'},{id:'12com',icon:'💹',label:'12th Commerce'},{id:'12arts',icon:'🎨',label:'12th Arts / HSC'},{id:'bscit',icon:'💻',label:'BSc IT / BCA'},{id:'bcom',icon:'📊',label:'B.Com'},{id:'ba',icon:'🏛️',label:'BA (Arts)'},{id:'btech_cse',icon:'⚙️',label:'B.Tech – CSE/IT/AI'},{id:'btech_mech',icon:'🔧',label:'B.Tech – Mechanical'},{id:'btech_civil',icon:'🏗️',label:'B.Tech – Civil'},{id:'pharma',icon:'💊',label:'Pharmacy (B.Pharm)'},{id:'nursing',icon:'🏥',label:'Nursing / GNM / ANM'}];
+function getCurrentUser(){try{return JSON.parse(localStorage.getItem('sakshar_current')||'null')}catch{return null}}
+function renderNav(active){
+  var u=getCurrentUser();var el=document.getElementById('main-nav-links');if(!el)return;
+  var nb='background:none;border:none;color:rgba(255,255,255,.72);font-family:Hind,sans-serif;font-size:.84rem;font-weight:500;padding:7px 12px;cursor:pointer;border-radius:7px;text-decoration:none;display:inline-flex;align-items:center';
+  if(!u){el.innerHTML='<a href="index.html" style="'+nb+'">Home</a><a href="login.html" style="'+nb+'">Login</a><a href="signup.html" style="background:#FF6B00;color:#fff;font-family:Hind,sans-serif;font-size:.84rem;font-weight:700;padding:7px 14px;border-radius:7px;text-decoration:none">Join Free</a>';return;}
+  var av=(u.fname||'S')[0].toUpperCase();
+  var links=[{href:'dashboard.html',id:'dashboard',label:'Dashboard'},{href:'resources.html',id:'resources',label:'📚 Resources'},{href:'smriti.html',id:'smriti',label:'🤖 SMRITI'},{href:'notes.html',id:'notes',label:'📝 Notes'},{href:'about.html',id:'about',label:'About'}];
+  el.innerHTML=links.map(function(l){return'<a href="'+l.href+'" style="'+nb+(active===l.id?';background:rgba(255,107,0,.18);color:#fff':'')+'">' +l.label+'</a>';}).join('')+
+    '<div style="display:flex;align-items:center;gap:7px;margin-left:4px"><div style="width:32px;height:32px;border-radius:50%;background:#FF6B00;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-family:Baloo 2,cursive;font-size:.9rem">'+av+'</div>'+
+    '<button style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);font-size:.75rem;padding:4px 11px;border-radius:18px;cursor:pointer;font-family:Hind,sans-serif" onclick="localStorage.removeItem(\'sakshar_current\');location.href=\'login.html\'">Logout</button></div>';
+}
+function renderFooter(){var el=document.getElementById('main-footer');if(!el)return;el.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;width:100%"><div>© 2025 <span style="color:#FF6B00;font-weight:700">SAKSHAR</span> — India\'s Free Academic Resource Hub</div><div style="display:flex;gap:18px"><a href="dashboard.html" style="color:rgba(255,255,255,.38);text-decoration:none">Dashboard</a><a href="smriti.html" style="color:rgba(255,255,255,.38);text-decoration:none">SMRITI AI</a><a href="notes.html" style="color:rgba(255,255,255,.38);text-decoration:none">Notes</a><a href="feedback.html" style="color:rgba(255,255,255,.38);text-decoration:none">Feedback</a></div></div>';}
+function showToast(msg,type){var t=document.createElement('div');t.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;background:'+(type==='warn'?'#7C3AED':'#0B1F3A')+';color:#fff;padding:11px 18px;border-radius:11px;font-size:.85rem;font-weight:600;box-shadow:0 7px 26px rgba(0,0,0,.22);border-left:4px solid #FF6B00;font-family:Hind,sans-serif';t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.remove();},2500);}
+// Populate depts
+var deptEl=document.getElementById('fb-dept');
+DEPT_LIST.forEach(function(d){var o=document.createElement('option');o.value=d.id;o.textContent=d.label;deptEl.appendChild(o);});
+var u=getCurrentUser();
+if(u&&u.fname)document.getElementById('fb-name').value=u.fname+' '+u.lname;
+if(u&&u.dept)document.getElementById('fb-dept').value=u.dept;
+var currentRating=0;
+function setRating(n){
+  currentRating=n;
+  document.querySelectorAll('.star-btn').forEach(function(b,i){b.classList.toggle('active',i<n);});
+  var labels=['','Poor 😕','Fair 😐','Good 👍','Very Good 😊','Excellent! 🌟'];
+  document.getElementById('rating-label').textContent=labels[n];
+}
+function submitFeedback(){
+  var name=document.getElementById('fb-name').value.trim();
+  var dept=document.getElementById('fb-dept').value;
+  if(!name){showToast('Please enter your name','warn');return;}
+  if(!dept){showToast('Please select your department','warn');return;}
+  if(!currentRating){showToast('Please give a rating','warn');return;}
+  var fb={name:name,dept:dept,rating:currentRating,like:document.getElementById('fb-like').value.trim(),improve:document.getElementById('fb-improve').value.trim(),category:document.getElementById('fb-category').value,recommend:document.getElementById('fb-recommend').value,date:new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})};
+  var feedbacks=JSON.parse(localStorage.getItem('sakshar_feedbacks')||'[]');feedbacks.push(fb);localStorage.setItem('sakshar_feedbacks',JSON.stringify(feedbacks));
+  document.getElementById('fb-form').style.display='none';document.getElementById('fb-success').style.display='block';
+}
+renderNav('feedback');renderFooter();
+</script>
+</body>
+</html>

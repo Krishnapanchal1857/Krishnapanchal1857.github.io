@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Login — SAKSHAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--sf:#FF6B00;--sf2:#FF8C35;--sfp:#FFF3EB;--nv:#0B1F3A;--nvm:#162E52;--cr:#FDFAF5;--g1:#F5F5F5;--g2:#E8E8E8;--g4:#9A9A9A;--g6:#555}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Hind',sans-serif;background:var(--nv);min-height:100vh}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(11,31,58,.97);backdrop-filter:blur(14px);height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:2.5px solid var(--sf)}
+.nav-logo{font-family:'Baloo 2',cursive;font-size:1.75rem;font-weight:800;color:#fff;letter-spacing:2px;text-decoration:none}.nav-logo span{color:var(--sf)}
+.nav-links{display:flex;gap:4px;align-items:center}
+.auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:88px 20px 40px;position:relative;overflow:hidden}
+.auth-page::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 25% 40%,rgba(255,107,0,.13) 0%,transparent 50%),radial-gradient(circle at 75% 70%,rgba(245,166,35,.07) 0%,transparent 40%)}
+.auth-box{background:#fff;border-radius:20px;width:100%;max-width:440px;box-shadow:0 24px 80px rgba(0,0,0,.32);overflow:hidden;position:relative;z-index:2}
+.auth-header{background:var(--nvm);padding:36px 40px 28px;text-align:center}
+.auth-logo{font-family:'Baloo 2',cursive;font-size:2rem;font-weight:800;color:#fff;letter-spacing:2px}.auth-logo span{color:var(--sf)}
+.auth-title{font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:700;color:#fff;margin-top:14px}
+.auth-subtitle{color:rgba(255,255,255,.5);font-size:.87rem;margin-top:5px}
+.auth-body{padding:32px 40px 40px}
+.form-label{display:block;font-size:.77rem;font-weight:700;color:var(--g6);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.form-input{width:100%;border:1.5px solid var(--g2);border-radius:10px;padding:12px 14px;font-family:'Hind',sans-serif;font-size:.92rem;color:var(--nv);outline:none;transition:border-color .18s;margin-bottom:16px}
+.form-input:focus{border-color:var(--sf)}
+.form-error{background:#FFF1F0;border-radius:9px;padding:10px 14px;font-size:.83rem;color:#DC2626;border:1.5px solid #FEE2E2;margin-bottom:14px;display:none}
+.btn-full{width:100%;padding:13px;border-radius:10px;font-family:'Hind',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;border:none;background:var(--sf);color:#fff;transition:all .2s}
+.btn-full:hover{background:var(--sf2);transform:translateY(-1px)}
+.hint-box{background:#F3EEFF;border-radius:10px;padding:12px 14px;font-size:.8rem;color:#7C3AED;border:1px solid rgba(124,58,237,.2);margin-bottom:16px}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">SAK<span>SHAR</span></a>
+  <div id="main-nav-links" class="nav-links"></div>
+</nav>
+<div class="auth-page">
+  <div class="auth-box">
+    <div class="auth-header">
+      <div class="auth-logo">SAK<span>SHAR</span></div>
+      <div class="auth-title">Welcome Back! 👋</div>
+      <div class="auth-subtitle">Login to access your resources</div>
+    </div>
+    <div class="auth-body">
+      <div class="hint-box">🛡 <strong>Admin?</strong> Use your admin credentials to access the Admin Panel.</div>
+      <div class="form-error" id="login-error"></div>
+      <div><label class="form-label">Email Address</label><input type="email" class="form-input" id="login-email" placeholder="yourname@email.com"></div>
+      <div><label class="form-label">Password</label><input type="password" class="form-input" id="login-pass" placeholder="Enter your password"></div>
+      <button class="btn-full" onclick="doLogin()" style="margin-bottom:16px">🔑 Login to SAKSHAR</button>
+      <div style="text-align:center;font-size:.88rem;color:var(--g6);margin-bottom:10px">New here? <a href="signup.html" style="color:var(--sf);font-weight:600">Create a Free Account</a></div>
+      <div style="text-align:center"><a href="index.html" style="font-size:.82rem;color:var(--g4);text-decoration:none">← Back to Home</a></div>
+    </div>
+  </div>
+</div>
+<script>
+var ADMIN_EMAIL='admin@sakshar.edu';var ADMIN_PASS='sakshar@admin2025';
+function getCurrentUser(){try{return JSON.parse(localStorage.getItem('sakshar_current')||'null')}catch{return null}}
+function setCurrentUser(u){localStorage.setItem('sakshar_current',JSON.stringify(u))}
+function getUsers(){try{return JSON.parse(localStorage.getItem('sakshar_users')||'[]')}catch{return[]}}
+function showToast(msg){var t=document.createElement('div');t.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;background:#0B1F3A;color:#fff;padding:11px 18px;border-radius:11px;font-size:.85rem;font-weight:600;box-shadow:0 7px 26px rgba(0,0,0,.22);border-left:4px solid #FF6B00;font-family:Hind,sans-serif';t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.remove();},2500);}
+function renderNav(){
+  var u=getCurrentUser();var el=document.getElementById('main-nav-links');if(!el)return;
+  var nb='background:none;border:none;color:rgba(255,255,255,.72);font-family:Hind,sans-serif;font-size:.84rem;font-weight:500;padding:7px 12px;cursor:pointer;border-radius:7px;text-decoration:none';
+  el.innerHTML='<a href="index.html" style="'+nb+'">Home</a><a href="login.html" style="'+nb+'">Login</a><a href="signup.html" style="background:#FF6B00;color:#fff;font-family:Hind,sans-serif;font-size:.84rem;font-weight:700;padding:7px 14px;border-radius:7px;text-decoration:none">Join Free</a>';
+}
+document.getElementById('login-pass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+function doLogin(){
+  var email=document.getElementById('login-email').value.trim();
+  var pass=document.getElementById('login-pass').value;
+  var err=document.getElementById('login-error');
+  err.style.display='none';
+  if(!email||!pass){err.textContent='Please fill in all fields.';err.style.display='block';return;}
+  if(email===ADMIN_EMAIL&&pass===ADMIN_PASS){
+    setCurrentUser({fname:'Admin',lname:'SAKSHAR',email:ADMIN_EMAIL,role:'admin'});
+    showToast('✅ Admin login successful!');
+    setTimeout(function(){window.location.href='admin.html';},900);return;
+  }
+  var users=getUsers();
+  var user=users.find(function(u){return u.email===email&&u.password===pass;});
+  if(!user){err.textContent='Invalid email or password. Please try again.';err.style.display='block';return;}
+  setCurrentUser(user);showToast('✅ Welcome back, '+user.fname+'!');
+  setTimeout(function(){window.location.href='dashboard.html';},900);
+}
+renderNav();
+</script>
+</body>
+</html>

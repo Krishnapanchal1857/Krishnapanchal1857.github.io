@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SAKSHAR — India's Free Academic Resource Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--sf:#FF6B00;--sf2:#FF8C35;--sfp:#FFF3EB;--nv:#0B1F3A;--nvm:#162E52;--cr:#FDFAF5;--g1:#F5F5F5;--g2:#E8E8E8;--g4:#9A9A9A;--g6:#555;--green:#059669;--radius:14px;--shadow:0 4px 20px rgba(11,31,58,.1);--shadow-lg:0 12px 40px rgba(11,31,58,.15)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Hind',sans-serif;background:var(--cr);color:var(--nv)}
+/* NAV */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(11,31,58,.97);backdrop-filter:blur(14px);height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:2.5px solid var(--sf)}
+.nav-logo{font-family:'Baloo 2',cursive;font-size:1.75rem;font-weight:800;color:#fff;letter-spacing:2px;text-decoration:none}.nav-logo span{color:var(--sf)}
+.nav-links{display:flex;gap:4px;align-items:center}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 24px;border-radius:10px;font-family:'Hind',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;text-decoration:none;border:none}
+.btn-saffron{background:var(--sf);color:#fff}.btn-saffron:hover{background:var(--sf2);transform:translateY(-1px)}
+.btn-outline{border:2px solid rgba(255,255,255,.25);color:#fff;background:none}.btn-outline:hover{border-color:var(--sf);background:rgba(255,107,0,.1)}
+/* HERO */
+.hero{min-height:100vh;background:var(--nv);display:flex;flex-direction:column;position:relative;overflow:hidden;padding-top:68px}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(circle at 18% 50%,rgba(255,107,0,.13) 0%,transparent 50%),radial-gradient(circle at 82% 20%,rgba(245,166,35,.08) 0%,transparent 40%),repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 41px)}
+.hero-center{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:60px 40px;position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.4);color:#FF8C35;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;padding:7px 20px;border-radius:30px;margin-bottom:26px;animation:fadeDown .6s ease both}
+.hero-title{font-family:'Baloo 2',cursive;font-size:clamp(4.5rem,11vw,9rem);font-weight:800;color:#fff;line-height:.9;letter-spacing:-3px;margin-bottom:10px;animation:fadeDown .6s .1s ease both}
+.hero-title .accent{color:var(--sf)}
+.hero-hindi{font-size:1.3rem;color:rgba(255,255,255,.4);margin-bottom:22px;animation:fadeDown .6s .2s ease both}
+.hero-sub{font-size:1.08rem;color:rgba(255,255,255,.58);max-width:560px;line-height:1.8;margin-bottom:42px;animation:fadeDown .6s .3s ease both}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeDown .6s .4s ease both}
+.hero-stats{display:flex;border-top:1px solid rgba(255,255,255,.08);animation:fadeDown .6s .5s ease both}
+.hs{flex:1;text-align:center;padding:26px 16px;border-right:1px solid rgba(255,255,255,.08)}.hs:last-child{border-right:none}
+.hs-num{font-family:'Baloo 2',cursive;font-size:2.2rem;font-weight:800;color:var(--sf);line-height:1}
+.hs-label{font-size:.72rem;color:rgba(255,255,255,.38);letter-spacing:1px;margin-top:3px}
+/* SECTIONS */
+.section-tag{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--sf);font-weight:700;margin-bottom:10px}
+.section-heading{font-family:'Baloo 2',cursive;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:var(--nv);margin-bottom:10px}
+.section-sub{color:var(--g6);font-size:.95rem;margin-bottom:0;line-height:1.7}
+/* DEPT GRID */
+.dept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px;margin-top:32px}
+.dept-chip{background:var(--cr);border:2px solid var(--g2);border-radius:var(--radius);padding:20px 16px;text-align:center;cursor:pointer;transition:all .25s;text-decoration:none;display:block}
+.dept-chip:hover{border-color:var(--sf);background:var(--sfp);transform:translateY(-3px);box-shadow:var(--shadow)}
+.dept-icon{font-size:2rem;margin-bottom:8px;display:block}
+.dept-name{font-weight:700;font-size:.92rem;color:var(--nv)}
+.dept-sub{font-size:.75rem;color:var(--g4);margin-top:3px}
+/* FEATURES */
+.feature-strip{background:var(--nv);padding:56px 40px}
+.features{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:28px}
+.feat{text-align:center;color:#fff}
+.feat-icon{font-size:2.4rem;margin-bottom:12px}
+.feat-title{font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.feat-desc{font-size:.83rem;color:rgba(255,255,255,.42);line-height:1.6}
+/* FOOTER */
+.main-footer{background:var(--nv);color:rgba(255,255,255,.38);padding:24px 44px;font-size:.82rem}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.revealed{opacity:1;transform:translateY(0)}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.navbar{padding:0 16px}.hero-center{padding:40px 20px}.feature-strip{padding:40px 20px}.dept-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">SAK<span>SHAR</span></a>
+  <div id="main-nav-links" class="nav-links"></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-center">
+    <div class="hero-badge">📚 India's Free Academic Resource Hub</div>
+    <h1 class="hero-title">SAK<span class="accent">SHAR</span></h1>
+    <div class="hero-hindi">सक्षर — ज्ञान की ओर एक कदम</div>
+    <p class="hero-sub">Free textbooks, reference books, notes, previous year papers & SMRITI AI — organized department-wise for every Indian student. Always free.</p>
+    <div class="hero-cta">
+      <a href="signup.html" class="btn btn-saffron" style="font-size:1rem;padding:14px 36px">🚀 Join Free — Start Learning</a>
+      <a href="login.html" class="btn btn-outline" style="font-size:1rem;padding:14px 36px">🔑 Already a Member</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-num">11</div><div class="hs-label">Departments</div></div>
+    <div class="hs"><div class="hs-num">300+</div><div class="hs-label">Resources</div></div>
+    <div class="hs"><div class="hs-num">PYQ</div><div class="hs-label">Real Papers</div></div>
+    <div class="hs"><div class="hs-num">🤖</div><div class="hs-label">SMRITI AI</div></div>
+    <div class="hs"><div class="hs-num">Free</div><div class="hs-label">Always</div></div>
+  </div>
+</section>
+
+<section style="background:#fff;padding:60px 40px">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-tag reveal">Browse by Department</div>
+    <h2 class="section-heading reveal">Find Your Stream</h2>
+    <p class="section-sub reveal">Click any department to explore resources. Login required to access full content.</p>
+    <div class="dept-grid">
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">⚙️</span><div class="dept-name">B.Tech CSE</div><div class="dept-sub">Sem 1–8 Full Syllabus</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">🔧</span><div class="dept-name">B.Tech Mechanical</div><div class="dept-sub">Sem 1–8 Full Syllabus</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">🏗️</span><div class="dept-name">B.Tech Civil</div><div class="dept-sub">Sem 1–8 Full Syllabus</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">💊</span><div class="dept-name">Pharmacy (B.Pharm)</div><div class="dept-sub">Sem 1–8 Full Syllabus</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">💻</span><div class="dept-name">BSc IT / BCA</div><div class="dept-sub">Sem 1–6 Full Syllabus</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">📊</span><div class="dept-name">B.Com</div><div class="dept-sub">Sem 1–6 Full Syllabus</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">🏛️</span><div class="dept-name">BA</div><div class="dept-sub">Sem 1–6 Full Syllabus</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">🔬</span><div class="dept-name">12th Science</div><div class="dept-sub">PCM • PCB • PCMB</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">💹</span><div class="dept-name">12th Commerce</div><div class="dept-sub">All Subjects</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">🎨</span><div class="dept-name">12th Arts / HSC</div><div class="dept-sub">All Subjects</div></a>
+      <a href="signup.html" class="dept-chip reveal"><span class="dept-icon">🏥</span><div class="dept-name">Nursing / GNM / ANM</div><div class="dept-sub">Year 1–3</div></a>
+    </div>
+    <div style="text-align:center;margin-top:36px">
+      <a href="signup.html" class="btn btn-saffron">Unlock All Resources →</a>
+    </div>
+  </div>
+</section>
+
+<div class="feature-strip">
+  <div class="features">
+    <div class="feat reveal"><div class="feat-icon">📖</div><div class="feat-title">Textbooks</div><div class="feat-desc">NCERT, university-prescribed books organized by subject and semester.</div></div>
+    <div class="feat reveal"><div class="feat-icon">📚</div><div class="feat-title">Reference Books</div><div class="feat-desc">Topper-recommended extra reading for deeper subject understanding.</div></div>
+    <div class="feat reveal"><div class="feat-icon">📝</div><div class="feat-title">Handwritten Notes</div><div class="feat-desc">Upload your notes, get ranked by peers, help thousands of students.</div></div>
+    <div class="feat reveal"><div class="feat-icon">🗂️</div><div class="feat-title">10 Years PYQ</div><div class="feat-desc">Real previous year papers from boards and universities 2015–2024.</div></div>
+    <div class="feat reveal"><div class="feat-icon">🤖</div><div class="feat-title">SMRITI AI</div><div class="feat-desc">Real AI-powered study assistant for doubts, notes summaries, study plans.</div></div>
+  </div>
+</div>
+
+<div style="background:var(--sf);padding:60px 40px;text-align:center">
+  <h2 style="font-family:'Baloo 2',cursive;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:#fff;margin-bottom:12px">Join SAKSHAR — It's Completely Free!</h2>
+  <p style="color:rgba(255,255,255,.8);margin-bottom:28px;font-size:1rem">Sign up in 60 seconds and get access to all departments, resources, notes and SMRITI AI.</p>
+  <a href="signup.html" class="btn" style="background:#fff;color:var(--sf);font-size:1rem;padding:14px 40px;font-weight:700">Create Free Account →</a>
+</div>
+
+<footer class="main-footer"><div id="main-footer"></div></footer>
+
+<script>
+// ═══ SHARED JS ═══
+var ADMIN_EMAIL='admin@sakshar.edu';var ADMIN_PASS='sakshar@admin2025';
+var DEPT_LIST=[{id:'12sci',icon:'🔬',label:'12th Science'},{id:'12com',icon:'💹',label:'12th Commerce'},{id:'12arts',icon:'🎨',label:'12th Arts / HSC'},{id:'bscit',icon:'💻',label:'BSc IT / BCA'},{id:'bcom',icon:'📊',label:'B.Com'},{id:'ba',icon:'🏛️',label:'BA (Arts)'},{id:'btech_cse',icon:'⚙️',label:'B.Tech – CSE/IT/AI'},{id:'btech_mech',icon:'🔧',label:'B.Tech – Mechanical'},{id:'btech_civil',icon:'🏗️',label:'B.Tech – Civil'},{id:'pharma',icon:'💊',label:'Pharmacy (B.Pharm)'},{id:'nursing',icon:'🏥',label:'Nursing / GNM / ANM'}];
+function getCurrentUser(){try{return JSON.parse(localStorage.getItem('sakshar_current')||'null')}catch{return null}}
+function renderNav(active){
+  var u=getCurrentUser();var el=document.getElementById('main-nav-links');if(!el)return;
+  var nb='background:none;border:none;color:rgba(255,255,255,.72);font-family:Hind,sans-serif;font-size:.84rem;font-weight:500;padding:7px 12px;cursor:pointer;border-radius:7px;text-decoration:none;display:inline-flex;align-items:center;transition:all .18s';
+  if(!u){el.innerHTML='<a href="index.html" style="'+nb+'">Home</a><a href="login.html" style="'+nb+'">Login</a><a href="signup.html" style="background:#FF6B00;color:#fff;font-family:Hind,sans-serif;font-size:.84rem;font-weight:700;padding:7px 14px;border-radius:7px;text-decoration:none">Join Free</a>';return;}
+  var av=(u.fname||'S')[0].toUpperCase();
+  var links=[{href:'dashboard.html',id:'dashboard',label:'Dashboard'},{href:'resources.html',id:'resources',label:'📚 Resources'},{href:'smriti.html',id:'smriti',label:'🤖 SMRITI'},{href:'notes.html',id:'notes',label:'📝 Notes'},{href:'about.html',id:'about',label:'About'}];
+  el.innerHTML=links.map(function(l){return'<a href="'+l.href+'" style="'+nb+(active===l.id?';background:rgba(255,107,0,.18);color:#fff':'')+'">' +l.label+'</a>';}).join('')+
+    '<div style="display:flex;align-items:center;gap:7px;margin-left:4px"><div style="width:32px;height:32px;border-radius:50%;background:#FF6B00;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-family:Baloo 2,cursive;font-size:.9rem">'+av+'</div>'+
+    '<button style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);font-size:.75rem;padding:4px 11px;border-radius:18px;cursor:pointer;font-family:Hind,sans-serif" onclick="localStorage.removeItem(\'sakshar_current\');location.href=\'login.html\'">Logout</button></div>';
+}
+function renderFooter(){
+  var el=document.getElementById('main-footer');if(!el)return;
+  el.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;width:100%"><div>© 2025 <span style="color:#FF6B00;font-weight:700">SAKSHAR</span> — India\'s Free Academic Resource Hub</div><div style="display:flex;gap:18px"><a href="dashboard.html" style="color:rgba(255,255,255,.38);text-decoration:none">Dashboard</a><a href="smriti.html" style="color:rgba(255,255,255,.38);text-decoration:none">SMRITI AI</a><a href="notes.html" style="color:rgba(255,255,255,.38);text-decoration:none">Notes</a><a href="feedback.html" style="color:rgba(255,255,255,.38);text-decoration:none">Feedback</a></div></div>';
+}
+function initReveal(){var els=document.querySelectorAll('.reveal');if(!els.length)return;var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('revealed');});},{threshold:.12});els.forEach(function(el){obs.observe(el);});}
+renderNav('home');renderFooter();initReveal();
+</script>
+</body>
+</html>

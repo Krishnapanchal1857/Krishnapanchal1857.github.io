@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard — SAKSHAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--sf:#FF6B00;--sf2:#FF8C35;--sfp:#FFF3EB;--nv:#0B1F3A;--nvm:#162E52;--cr:#FDFAF5;--g1:#F5F5F5;--g2:#E8E8E8;--g4:#9A9A9A;--g6:#555;--green:#059669;--radius:14px;--shadow:0 4px 20px rgba(11,31,58,.1)}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind',sans-serif;background:var(--g1);color:var(--nv)}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(11,31,58,.97);backdrop-filter:blur(14px);height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:2.5px solid var(--sf)}
+.nav-logo{font-family:'Baloo 2',cursive;font-size:1.75rem;font-weight:800;color:#fff;letter-spacing:2px;text-decoration:none}.nav-logo span{color:var(--sf)}
+.nav-links{display:flex;gap:4px;align-items:center}
+.page-band{background:linear-gradient(135deg,var(--nv) 0%,var(--nvm) 100%);padding:32px 60px;margin-top:68px;position:relative;overflow:hidden}
+.page-band::after{content:'DASHBOARD';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-family:'Baloo 2',cursive;font-size:6rem;font-weight:800;color:rgba(255,255,255,.04);white-space:nowrap}
+.page-band-title{font-family:'Baloo 2',cursive;font-size:1.9rem;font-weight:800;color:#fff;margin-bottom:4px}
+.page-band-sub{color:rgba(255,255,255,.45);font-size:.9rem}
+.content{padding:40px 60px;max-width:1300px;margin:0 auto}
+.welcome-banner{background:linear-gradient(135deg,var(--nv) 0%,var(--nvm) 100%);border-radius:20px;padding:34px 38px;display:flex;align-items:center;gap:28px;margin-bottom:36px;position:relative;overflow:hidden}
+.welcome-banner::before{content:'';position:absolute;right:-30px;top:-30px;width:220px;height:220px;border-radius:50%;background:rgba(255,107,0,.1)}
+.wb-av{width:68px;height:68px;border-radius:50%;background:var(--sf);display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:#fff;flex-shrink:0;border:3px solid rgba(255,255,255,.18);position:relative;z-index:1}
+.wb-text{position:relative;z-index:1}
+.wb-greet{font-size:.75rem;color:rgba(255,255,255,.45);letter-spacing:1px;text-transform:uppercase}
+.wb-name{font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:#fff;line-height:1.1;margin:3px 0}
+.wb-dept{font-size:.85rem;color:rgba(255,255,255,.45)}
+.wb-actions{margin-left:auto;display:flex;gap:10px;position:relative;z-index:1;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;padding:10px 18px;border-radius:10px;font-family:'Hind',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;text-decoration:none;border:none}
+.btn-sf{background:var(--sf);color:#fff}.btn-sf:hover{background:var(--sf2)}
+.btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}.btn-ghost:hover{background:rgba(255,107,0,.2)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
+.stat-card{background:#fff;border-radius:var(--radius);padding:22px;border:1.5px solid var(--g2);transition:all .2s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.stat-icon{font-size:1.7rem;margin-bottom:10px}
+.stat-num{font-family:'Baloo 2',cursive;font-size:1.9rem;font-weight:800;color:var(--nv);line-height:1}
+.stat-label{font-size:.78rem;color:var(--g4);margin-top:3px}
+.section-tag{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--sf);font-weight:700;margin-bottom:8px}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-top:16px}
+.quick-card{background:#fff;border-radius:var(--radius);padding:22px 16px;border:1.5px solid var(--g2);cursor:pointer;text-align:center;transition:all .2s;text-decoration:none;display:block}
+.quick-card:hover{border-color:var(--sf);background:var(--sfp);transform:translateY(-2px);box-shadow:var(--shadow)}
+.qc-icon{font-size:1.9rem;margin-bottom:8px}
+.qc-label{font-weight:700;font-size:.87rem;color:var(--nv)}
+.notice-card{background:#fff;border-radius:12px;padding:16px 18px;border:1.5px solid var(--g2);border-left-width:4px;margin-bottom:10px}
+.main-footer{background:var(--nv);color:rgba(255,255,255,.38);padding:24px 44px;font-size:.82rem}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}.revealed{opacity:1;transform:translateY(0)}
+@media(max-width:900px){.content{padding:24px 18px}.stats-grid{grid-template-columns:repeat(2,1fr)}.welcome-banner{flex-wrap:wrap}.wb-actions{margin-left:0;width:100%}.page-band{padding:24px 20px}}
+</style>
+</head>
+<body>
+<nav class="navbar"><a href="index.html" class="nav-logo">SAK<span>SHAR</span></a><div id="main-nav-links" class="nav-links"></div></nav>
+<div class="page-wrap">
+  <div class="page-band"><div class="page-band-title">📊 My Dashboard</div><div class="page-band-sub">Your personalized SAKSHAR learning hub</div></div>
+  <div class="content">
+    <div class="welcome-banner">
+      <div class="wb-av" id="wb-av">S</div>
+      <div class="wb-text"><div class="wb-greet">Good Day,</div><div class="wb-name" id="wb-name">Student</div><div class="wb-dept" id="wb-dept">Loading...</div></div>
+      <div class="wb-actions">
+        <a href="resources.html" class="btn btn-sf">📚 Resources</a>
+        <a href="smriti.html" class="btn btn-ghost">🤖 SMRITI AI</a>
+        <a href="notes.html" class="btn btn-ghost">📝 Notes</a>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card reveal"><div class="stat-icon">📖</div><div class="stat-num">48</div><div class="stat-label">Textbooks Available</div></div>
+      <div class="stat-card reveal"><div class="stat-icon">📚</div><div class="stat-num">72</div><div class="stat-label">Reference Books</div></div>
+      <div class="stat-card reveal"><div class="stat-icon">🗂️</div><div class="stat-num">10 Yrs</div><div class="stat-label">PYQ Papers</div></div>
+      <div class="stat-card reveal"><div class="stat-icon">📝</div><div class="stat-num">120+</div><div class="stat-label">Practice Papers</div></div>
+    </div>
+    <div class="reveal">
+      <div class="section-tag">Quick Access</div>
+      <h3 style="font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:700;color:var(--nv);margin-bottom:4px">Jump Right In</h3>
+      <div class="quick-grid">
+        <a href="resources.html" class="quick-card"><div class="qc-icon">📖</div><div class="qc-label">Textbooks</div></a>
+        <a href="resources.html" class="quick-card"><div class="qc-icon">📚</div><div class="qc-label">Reference Books</div></a>
+        <a href="resources.html" class="quick-card"><div class="qc-icon">✏️</div><div class="qc-label">Notes</div></a>
+        <a href="resources.html" class="quick-card"><div class="qc-icon">📝</div><div class="qc-label">Practice Papers</div></a>
+        <a href="resources.html" class="quick-card"><div class="qc-icon">🗂️</div><div class="qc-label">PYQ Papers</div></a>
+        <a href="smriti.html" class="quick-card"><div class="qc-icon">🤖</div><div class="qc-label">SMRITI AI</div></a>
+        <a href="notes.html" class="quick-card"><div class="qc-icon">⬆️</div><div class="qc-label">Upload Notes</div></a>
+        <a href="feedback.html" class="quick-card"><div class="qc-icon">💬</div><div class="qc-label">Feedback</div></a>
+      </div>
+    </div>
+    <div style="margin-top:40px" class="reveal">
+      <div class="section-tag">Notice Board</div>
+      <h3 style="font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:700;color:var(--nv);margin-bottom:16px">Latest Updates</h3>
+      <div class="notice-card" style="border-left-color:var(--sf)"><div style="font-weight:700;color:var(--nv);margin-bottom:3px">🆕 SMRITI AI is Now LIVE!</div><div style="font-size:.84rem;color:var(--g6)">SMRITI now uses a real AI API. Ask any academic question and get intelligent answers instantly.</div></div>
+      <div class="notice-card" style="border-left-color:var(--green)"><div style="font-weight:700;color:var(--nv);margin-bottom:3px">📝 Notes Upload & Ranking System Active</div><div style="font-size:.84rem;color:var(--g6)">You can now upload your handwritten or typed notes. Get rated by peers and earn rankings!</div></div>
+      <div class="notice-card" style="border-left-color:#7C3AED"><div style="font-weight:700;color:var(--nv);margin-bottom:3px">📚 All Departments Fully Updated</div><div style="font-size:.84rem;color:var(--g6)">BSc IT, B.Tech (CSE/Mech/Civil), Pharmacy, B.Com — all semester-wise subjects now available.</div></div>
+    </div>
+  </div>
+</div>
+<footer class="main-footer"><div id="main-footer"></div></footer>
+<script>
+var ADMIN_EMAIL='admin@sakshar.edu';
+var DEPT_LIST=[{id:'12sci',icon:'🔬',label:'12th Science'},{id:'12com',icon:'💹',label:'12th Commerce'},{id:'12arts',icon:'🎨',label:'12th Arts / HSC'},{id:'bscit',icon:'💻',label:'BSc IT / BCA'},{id:'bcom',icon:'📊',label:'B.Com'},{id:'ba',icon:'🏛️',label:'BA (Arts)'},{id:'btech_cse',icon:'⚙️',label:'B.Tech – CSE/IT/AI'},{id:'btech_mech',icon:'🔧',label:'B.Tech – Mechanical'},{id:'btech_civil',icon:'🏗️',label:'B.Tech – Civil'},{id:'pharma',icon:'💊',label:'Pharmacy (B.Pharm)'},{id:'nursing',icon:'🏥',label:'Nursing / GNM / ANM'}];
+function getCurrentUser(){try{return JSON.parse(localStorage.getItem('sakshar_current')||'null')}catch{return null}}
+function requireAuth(){var u=getCurrentUser();if(!u){window.location.href='login.html';return false;}return true;}
+function renderNav(active){
+  var u=getCurrentUser();var el=document.getElementById('main-nav-links');if(!el)return;
+  var nb='background:none;border:none;color:rgba(255,255,255,.72);font-family:Hind,sans-serif;font-size:.84rem;font-weight:500;padding:7px 12px;cursor:pointer;border-radius:7px;text-decoration:none;display:inline-flex;align-items:center';
+  if(!u){el.innerHTML='<a href="login.html" style="'+nb+'">Login</a><a href="signup.html" style="background:#FF6B00;color:#fff;font-family:Hind,sans-serif;font-size:.84rem;font-weight:700;padding:7px 14px;border-radius:7px;text-decoration:none">Join Free</a>';return;}
+  var av=(u.fname||'S')[0].toUpperCase();
+  var links=[{href:'dashboard.html',id:'dashboard',label:'Dashboard'},{href:'resources.html',id:'resources',label:'📚 Resources'},{href:'smriti.html',id:'smriti',label:'🤖 SMRITI'},{href:'notes.html',id:'notes',label:'📝 Notes'},{href:'about.html',id:'about',label:'About'}];
+  el.innerHTML=links.map(function(l){return'<a href="'+l.href+'" style="'+nb+(active===l.id?';background:rgba(255,107,0,.18);color:#fff':'')+'">' +l.label+'</a>';}).join('')+
+    '<div style="display:flex;align-items:center;gap:7px;margin-left:4px"><div style="width:32px;height:32px;border-radius:50%;background:#FF6B00;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-family:Baloo 2,cursive;font-size:.9rem">'+av+'</div>'+
+    '<button style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);font-size:.75rem;padding:4px 11px;border-radius:18px;cursor:pointer;font-family:Hind,sans-serif" onclick="localStorage.removeItem(\'sakshar_current\');location.href=\'login.html\'">Logout</button></div>';
+}
+function renderFooter(){var el=document.getElementById('main-footer');if(!el)return;el.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;width:100%"><div>© 2025 <span style="color:#FF6B00;font-weight:700">SAKSHAR</span> — India\'s Free Academic Resource Hub</div><div style="display:flex;gap:18px"><a href="dashboard.html" style="color:rgba(255,255,255,.38);text-decoration:none">Dashboard</a><a href="smriti.html" style="color:rgba(255,255,255,.38);text-decoration:none">SMRITI AI</a><a href="notes.html" style="color:rgba(255,255,255,.38);text-decoration:none">Notes</a><a href="feedback.html" style="color:rgba(255,255,255,.38);text-decoration:none">Feedback</a></div></div>';}
+function initReveal(){var els=document.querySelectorAll('.reveal');if(!els.length)return;var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('revealed');});},{threshold:.12});els.forEach(function(el){obs.observe(el);});}
+requireAuth();
+var u=getCurrentUser();
+if(u){
+  document.getElementById('wb-av').textContent=u.fname?u.fname[0].toUpperCase():'S';
+  document.getElementById('wb-name').textContent=(u.fname||'')+(u.lname?' '+u.lname:'');
+  var deptObj=DEPT_LIST.find(function(d){return d.id===u.dept;});
+  document.getElementById('wb-dept').textContent=(deptObj?deptObj.icon+' '+deptObj.label:'Student')+(u.college?' | '+u.college:'');
+}
+renderNav('dashboard');renderFooter();initReveal();
+</script>
+</body>
+</html>

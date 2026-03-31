@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SMRITI AI — SAKSHAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--sf:#FF6B00;--sf2:#FF8C35;--sfp:#FFF3EB;--nv:#0B1F3A;--nvm:#162E52;--cr:#FDFAF5;--g1:#F5F5F5;--g2:#E8E8E8;--g4:#9A9A9A;--g6:#555;--ai:#7C3AED;--aip:#F3EEFF}
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}
+body{font-family:'Hind',sans-serif;background:var(--cr);color:var(--nv);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.nav{height:64px;flex-shrink:0;background:rgba(11,31,58,.97);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:2.5px solid var(--sf);z-index:100}
+.logo{font-family:'Baloo 2',cursive;font-size:1.6rem;font-weight:800;color:#fff;letter-spacing:2px;text-decoration:none}.logo span{color:var(--sf)}
+.navl{display:flex;gap:3px;align-items:center}
+.nb{background:none;border:none;color:rgba(255,255,255,.72);font-family:'Hind',sans-serif;font-size:.84rem;font-weight:500;padding:7px 12px;cursor:pointer;border-radius:7px;transition:all .18s;text-decoration:none;display:inline-flex;align-items:center}
+.nb:hover,.nb.on{color:#fff;background:rgba(255,107,0,.18)}.nb.pri{background:var(--sf)!important;color:#fff!important;font-weight:700}
+.nav-av{width:30px;height:30px;border-radius:50%;background:var(--sf);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.86rem}
+.lo{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);font-size:.74rem;padding:4px 10px;border-radius:18px;cursor:pointer;font-family:'Hind',sans-serif;transition:all .18s}
+.lo:hover{background:rgba(255,107,0,.3);color:#fff}
+.body{display:flex;flex:1;overflow:hidden}
+/* SIDEBAR */
+.sb{width:230px;flex-shrink:0;background:var(--nv);display:flex;flex-direction:column;overflow-y:auto;border-right:2px solid rgba(255,255,255,.07)}
+.sb-logo{padding:16px 16px 8px;font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
+.ai-badge{background:var(--sf);color:#fff;font-size:.62rem;padding:2px 7px;border-radius:10px;font-weight:700;letter-spacing:.5px}
+.mode-lbl{padding:8px 16px 5px;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:700}
+.mode-btn{width:100%;text-align:left;padding:10px 16px;border:none;background:none;font-family:'Hind',sans-serif;font-size:.85rem;cursor:pointer;display:flex;align-items:flex-start;gap:10px;color:rgba(255,255,255,.6);border-left:3px solid transparent;transition:all .16s;line-height:1.3}
+.mode-btn:hover{background:rgba(255,255,255,.07);color:#fff}.mode-btn.on{background:rgba(255,107,0,.18);color:#fff;border-left-color:var(--sf)}
+.mode-btn .mi{font-size:1.15rem;flex-shrink:0;margin-top:1px}
+.mode-btn .mt{display:flex;flex-direction:column;gap:2px}
+.mode-btn .mn{font-weight:700;font-size:.84rem}
+.mode-btn .ms{font-size:.71rem;color:rgba(255,255,255,.38);font-weight:400}
+.mode-btn.on .ms{color:rgba(255,255,255,.55)}
+.qs-lbl{padding:12px 16px 6px;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:700;border-top:1px solid rgba(255,255,255,.07);margin-top:6px}
+.qs-btn{width:100%;text-align:left;padding:7px 15px;border:none;background:none;font-family:'Hind',sans-serif;font-size:.78rem;cursor:pointer;color:rgba(255,255,255,.5);transition:all .15s}
+.qs-btn:hover{color:#fff;background:rgba(255,255,255,.05)}
+.sb-info{margin-top:auto;padding:12px 14px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-info-txt{font-size:.7rem;color:rgba(255,255,255,.35);line-height:1.5;text-align:center}
+.sb-info-txt span{color:var(--sf);font-weight:700}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.mode-hd{padding:13px 24px;border-bottom:1px solid var(--g2);background:#fff;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.mode-hd-ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.mode-hd-title{font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:800;color:var(--nv)}
+.mode-hd-sub{font-size:.78rem;color:var(--g4);margin-top:1px}
+/* CHAT */
+.chat-area{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px}
+.chat-area.hidden{display:none}
+.msg{max-width:74%;display:flex;flex-direction:column;gap:4px}
+.msg.user{align-self:flex-end;align-items:flex-end}
+.msg.ai{align-self:flex-start;align-items:flex-start}
+.bubble{padding:12px 16px;border-radius:14px;font-size:.88rem;line-height:1.68;word-wrap:break-word}
+.msg.user .bubble{background:var(--sf);color:#fff;border-bottom-right-radius:4px}
+.msg.ai .bubble{background:#fff;color:var(--nv);border:1.5px solid var(--g2);border-bottom-left-radius:4px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.msg-meta{font-size:.67rem;color:var(--g4);padding:0 4px}
+.ai-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--ai),#9F67FF);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#fff;font-weight:800;flex-shrink:0;font-family:'Baloo 2',cursive}
+.img-prev{max-width:180px;border-radius:9px;margin-bottom:5px;border:1.5px solid rgba(255,255,255,.3)}
+.file-badge{background:rgba(255,255,255,.2);border-radius:7px;padding:4px 10px;font-size:.75rem;display:inline-flex;align-items:center;gap:5px;margin-bottom:5px}
+.typing-bubble{background:#fff;border:1.5px solid var(--g2);border-radius:14px;border-bottom-left-radius:4px;padding:12px 16px;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.dot{width:7px;height:7px;background:var(--g4);border-radius:50%;animation:bonce .9s infinite}
+.dot:nth-child(2){animation-delay:.18s}.dot:nth-child(3){animation-delay:.36s}
+@keyframes bonce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
+/* PANELS */
+.panel-area{flex:1;overflow-y:auto;padding:24px;display:none}
+.panel-area.visible{display:block}
+.panel-card{background:#fff;border-radius:14px;border:1.5px solid var(--g2);padding:22px;max-width:780px;margin:0 auto}
+.pcard-title{font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;color:var(--nv);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:.77rem;font-weight:700;color:var(--g6);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.field select,.field input,.field textarea{width:100%;border:1.5px solid var(--g2);border-radius:9px;padding:10px 13px;font-family:'Hind',sans-serif;font-size:.9rem;color:var(--nv);background:#fff;outline:none;transition:border-color .18s}
+.field select:focus,.field input:focus,.field textarea:focus{border-color:var(--sf)}
+.field textarea{min-height:110px;resize:vertical;line-height:1.6}
+/* File Upload */
+.upload-zone{border:2px dashed var(--g2);border-radius:11px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--g1);position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--sf);background:var(--sfp)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.uz-ic{font-size:1.8rem;margin-bottom:7px}
+.uz-tt{font-weight:700;color:var(--nv);font-size:.88rem;margin-bottom:3px}
+.uz-sub{font-size:.76rem;color:var(--g4)}
+.file-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.fchip{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--g2);border-radius:7px;padding:5px 10px;font-size:.78rem;color:var(--nv)}
+.fchip button{background:none;border:none;cursor:pointer;color:var(--g4);font-size:.85rem;padding:0 2px;line-height:1}
+.fchip button:hover{color:#DC2626}
+/* Result */
+.result-box{background:var(--aip);border-radius:12px;padding:18px;margin-top:18px;border:1.5px solid #DDD6FE;display:none}
+.result-box.visible{display:block}
+.result-box-hd{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;color:var(--ai);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.result-content{font-size:.88rem;line-height:1.72;color:var(--nv)}
+/* Buttons */
+.run-btn{background:var(--ai);color:#fff;border:none;border-radius:10px;padding:12px 26px;font-family:'Hind',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.run-btn:hover{background:#6D28D9;transform:translateY(-1px)}
+.run-btn:disabled{background:var(--g4);cursor:not-allowed;transform:none}
+.run-btn.sf{background:var(--sf)}.run-btn.sf:hover{background:var(--sf2)}
+/* Progress */
+.progress-bar{height:4px;background:var(--g2);border-radius:2px;overflow:hidden;margin:10px 0}
+.pb-fill{height:100%;background:linear-gradient(90deg,var(--sf),var(--ai));border-radius:2px;width:0%;transition:width .3s ease}
+/* Q type grid */
+.qtype-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.qtype-card{border:2px solid var(--g2);border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .18s;background:#fff}
+.qtype-card:hover{border-color:var(--ai)}.qtype-card.sel{border-color:var(--ai);background:var(--aip)}
+.qt-ic{font-size:1.2rem;margin-bottom:3px}
+.qt-nm{font-size:.77rem;font-weight:700;color:var(--nv)}
+/* Concept chips */
+.concept-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.cc{padding:6px 13px;border-radius:18px;font-size:.8rem;font-weight:600;border:1.5px solid var(--g2);background:#fff;cursor:pointer;transition:all .18s;color:var(--g6)}
+.cc:hover{border-color:var(--ai);color:var(--ai)}.cc.sel{border-color:var(--ai);background:var(--aip);color:var(--ai)}
+/* Date pair */
+.date-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* Chat input */
+.chat-input-wrap{padding:13px 20px;background:#fff;border-top:1px solid var(--g2);flex-shrink:0}
+.upload-strip{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.img-chip{display:flex;align-items:center;gap:5px;background:var(--sfp);border:1.5px solid rgba(255,107,0,.2);border-radius:7px;padding:4px 9px;font-size:.74rem;color:var(--sf);font-weight:600}
+.img-chip button{background:none;border:none;cursor:pointer;color:var(--sf);font-size:.85rem;padding:0}
+.chat-row{display:flex;align-items:flex-end;gap:9px}
+.chat-inp{flex:1;border:2px solid var(--g2);border-radius:11px;padding:11px 14px;font-family:'Hind',sans-serif;font-size:.9rem;resize:none;min-height:46px;max-height:130px;overflow-y:auto;outline:none;transition:border-color .18s;line-height:1.5}
+.chat-inp:focus{border-color:var(--sf)}
+.tool-btn{width:38px;height:38px;border-radius:9px;border:1.5px solid var(--g2);background:#fff;cursor:pointer;font-size:1.05rem;display:flex;align-items:center;justify-content:center;transition:all .18s;position:relative;flex-shrink:0}
+.tool-btn:hover{border-color:var(--sf);background:var(--sfp)}
+.tool-btn input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.send-btn{width:44px;height:44px;border-radius:11px;background:var(--sf);border:none;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.send-btn:hover{background:var(--sf2);transform:scale(1.05)}
+.send-btn:disabled{background:var(--g4);cursor:not-allowed;transform:none}
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--nv);color:#fff;padding:10px 16px;border-radius:10px;font-size:.84rem;font-weight:500;box-shadow:0 7px 26px rgba(0,0,0,.26);transform:translateY(60px);opacity:0;transition:all .28s cubic-bezier(.34,1.56,.64,1);border-left:4px solid var(--sf)}
+.toast.show{transform:translateY(0);opacity:1}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--g2);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--sf)}
+@media(max-width:780px){.sb{display:none}.chat-area{padding:14px 12px}.chat-input-wrap{padding:10px 12px}.panel-area{padding:14px}.qtype-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="logo">SAK<span>SHAR</span></a>
+  <div class="navl" id="navl"></div>
+</nav>
+
+<div class="body">
+<!-- SIDEBAR -->
+<div class="sb">
+  <div class="sb-logo">🤖 SMRITI <span class="ai-badge">AI</span></div>
+
+  <!-- API KEY BOX — hidden, toggle with gear icon at bottom of sidebar -->
+  <div id="apiKeyBox" style="display:none;margin:10px 12px;background:rgba(255,107,0,.15);border:1.5px solid rgba(255,107,0,.4);border-radius:10px;padding:12px">
+    <div style="font-size:.68rem;color:#FF8C35;font-weight:700;letter-spacing:.5px;margin-bottom:7px">🔑 ANTHROPIC API KEY</div>
+    <input id="apiKeyInput" type="password" placeholder="Paste sk-ant-api03-... here"
+      style="width:100%;background:rgba(0,0,0,.3);border:1.5px solid rgba(255,255,255,.2);border-radius:7px;padding:8px 10px;color:#fff;font-family:'Hind',sans-serif;font-size:.77rem;outline:none;transition:border-color .2s"
+      onfocus="this.style.borderColor='#FF6B00'" onblur="this.style.borderColor='rgba(255,255,255,.2)'"
+      onkeydown="if(event.key==='Enter')saveApiKey()">
+    <button onclick="saveApiKey()"
+      style="width:100%;margin-top:7px;padding:8px;background:var(--sf);color:#fff;border:none;border-radius:7px;font-family:'Hind',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">
+      ✅ Save &amp; Connect
+    </button>
+    <div id="keyStatus" style="font-size:.69rem;text-align:center;margin-top:6px;color:rgba(255,255,255,.4)"></div>
+    <div style="font-size:.65rem;color:rgba(255,255,255,.3);margin-top:6px;line-height:1.5;text-align:center">
+      Get free key → <span style="color:#FF8C35;font-weight:700">console.anthropic.com</span>
+    </div>
+  </div>
+
+  <div class="mode-lbl">Choose Mode</div>
+  <button class="mode-btn on" id="mb-doubt"     onclick="setMode('doubt')">   <span class="mi">💬</span><div class="mt"><span class="mn">Ask a Doubt</span>      <span class="ms">Chat + Image/PDF support</span></div></button>
+  <button class="mode-btn"    id="mb-summarize" onclick="setMode('summarize')"><span class="mi">📋</span><div class="mt"><span class="mn">Summarize Notes</span>   <span class="ms">Paste text or upload file</span></div></button>
+  <button class="mode-btn"    id="mb-questions" onclick="setMode('questions')"><span class="mi">❓</span><div class="mt"><span class="mn">Generate Questions</span> <span class="ms">MCQ, Short, Long Answer</span></div></button>
+  <button class="mode-btn"    id="mb-plan"      onclick="setMode('plan')">     <span class="mi">📅</span><div class="mt"><span class="mn">Study Plan</span>         <span class="ms">Exam-date personalised</span></div></button>
+  <button class="mode-btn"    id="mb-explain"   onclick="setMode('explain')">  <span class="mi">🔬</span><div class="mt"><span class="mn">Explain Concept</span>   <span class="ms">Examples & exam tips</span></div></button>
+
+  <!-- Tiny hidden gear to open API key settings -->
+  <div style="display:flex;justify-content:flex-end;padding:4px 12px 0">
+    <button onclick="var b=document.getElementById('apiKeyBox');b.style.display=b.style.display==='none'?'block':'none'"
+      title="API Key Settings"
+      style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,.18);font-size:.8rem;padding:2px 4px;transition:color .2s"
+      onmouseover="this.style.color='rgba(255,255,255,.5)'" onmouseout="this.style.color='rgba(255,255,255,.18)'">⚙</button>
+  </div>
+
+  <div class="qs-lbl">Quick Start</div>
+  <button class="qs-btn" onclick="quickQ('Explain Newton\'s 3 Laws with real examples')">⚡ Newton's Laws</button>
+  <button class="qs-btn" onclick="quickQ('Explain DBMS Normalization — 1NF 2NF 3NF with examples')">⚡ DBMS Normalization</button>
+  <button class="qs-btn" onclick="quickQ('Explain Organic Chemistry SN1 and SN2 reactions')">⚡ Organic Chemistry</button>
+  <button class="qs-btn" onclick="quickQ('Explain the difference between TCP and UDP')">⚡ TCP vs UDP</button>
+  <button class="qs-btn" onclick="quickQ('Explain pharmacokinetics and ADME process')">⚡ Pharmacokinetics</button>
+  <button class="qs-btn" onclick="quickQ('Explain BEP Analysis and P/V Ratio for B.Com students')">⚡ Cost Accounting BEP</button>
+  <button class="qs-btn" onclick="quickQ('Explain Bernoulli\'s Equation with real engineering examples')">⚡ Bernoulli's Eq.</button>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="mode-hd" id="modeHd">
+    <div class="mode-hd-ic" id="modeHdIc" style="background:#FFF3EB">💬</div>
+    <div>
+      <div class="mode-hd-title" id="modeHdTitle">Ask a Doubt</div>
+      <div class="mode-hd-sub"   id="modeHdSub">Chat with SMRITI. Upload images or PDFs of your questions for instant help.</div>
+    </div>
+  </div>
+
+  <!-- ── ASK A DOUBT (chat) ── -->
+  <div class="chat-area" id="chatArea"></div>
+
+  <!-- ── SUMMARIZE ── -->
+  <div class="panel-area" id="panelSummarize">
+    <div class="panel-card">
+      <div class="pcard-title">📋 Summarize Notes</div>
+      <div class="field"><label>Subject / Topic</label><input type="text" id="sumSubject" placeholder="e.g. Data Structures — Stacks and Queues"></div>
+      <div class="field">
+        <label>Paste Your Notes / Text</label>
+        <textarea id="sumText" placeholder="Paste your chapter notes, textbook content, or any academic text here..."></textarea>
+      </div>
+      <div class="field">
+        <label>Or Upload Notes File (Image / PDF)</label>
+        <div class="upload-zone" id="sumZone">
+          <input type="file" id="sumFile" accept=".pdf,.jpg,.jpeg,.png,.webp" onchange="fileChg(this,'sum')">
+          <div class="uz-ic">📄</div>
+          <div class="uz-tt">Drop PDF or Image here</div>
+          <div class="uz-sub">PDF, JPG, PNG, WEBP supported</div>
+        </div>
+        <div class="file-chips" id="sumChips"></div>
+      </div>
+      <div class="field">
+        <label>Summary Style</label>
+        <select id="sumStyle">
+          <option value="bullet">📌 Bullet Points (Exam Ready)</option>
+          <option value="short">📝 Short Paragraph</option>
+          <option value="detailed">📚 Detailed with Examples</option>
+          <option value="flashcard">🃏 Flashcard Format (Q&A)</option>
+        </select>
+      </div>
+      <button class="run-btn sf" id="sumBtn" onclick="runSummarize()">✨ Generate Summary</button>
+      <div class="progress-bar"><div class="pb-fill" id="sumPB"></div></div>
+      <div class="result-box" id="sumResult">
+        <div class="result-box-hd">📋 Your Summary</div>
+        <div class="result-content" id="sumContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GENERATE QUESTIONS ── -->
+  <div class="panel-area" id="panelQuestions">
+    <div class="panel-card">
+      <div class="pcard-title">❓ Generate Questions</div>
+      <div class="field">
+        <label>Department</label>
+        <select id="qDept">
+          <option value="12th Science">12th Science (PCM/PCB)</option>
+          <option value="12th Commerce">12th Commerce</option>
+          <option value="12th Arts">12th Arts / HSC</option>
+          <option value="BSc IT / BCA" selected>BSc IT / BCA</option>
+          <option value="B.Com">B.Com</option>
+          <option value="BA Arts">BA (Arts)</option>
+          <option value="B.Tech CSE/IT/AI">B.Tech – CSE / IT / AI</option>
+          <option value="B.Tech Mechanical">B.Tech – Mechanical</option>
+          <option value="B.Tech Civil">B.Tech – Civil</option>
+          <option value="B.Pharm Pharmacy">Pharmacy (B.Pharm)</option>
+          <option value="Nursing / GNM / ANM">Nursing / GNM / ANM</option>
+        </select>
+      </div>
+      <div class="field"><label>Subject & Topic</label><input type="text" id="qSubject" placeholder="e.g. Data Structures — Trees and Graphs"></div>
+      <div class="field">
+        <label>Question Types</label>
+        <div class="qtype-grid">
+          <div class="qtype-card sel" id="qt-mcq"        onclick="toggleQT('mcq')">       <div class="qt-ic">☑️</div><div class="qt-nm">MCQ</div></div>
+          <div class="qtype-card sel" id="qt-short"      onclick="toggleQT('short')">     <div class="qt-ic">✍️</div><div class="qt-nm">Short Ans</div></div>
+          <div class="qtype-card sel" id="qt-long"       onclick="toggleQT('long')">      <div class="qt-ic">📝</div><div class="qt-nm">Long Ans</div></div>
+          <div class="qtype-card"    id="qt-truefalse"   onclick="toggleQT('truefalse')"> <div class="qt-ic">✅</div><div class="qt-nm">True/False</div></div>
+          <div class="qtype-card"    id="qt-fillblanks"  onclick="toggleQT('fillblanks')"><div class="qt-ic">📋</div><div class="qt-nm">Fill Blanks</div></div>
+          <div class="qtype-card"    id="qt-match"       onclick="toggleQT('match')">     <div class="qt-ic">🔗</div><div class="qt-nm">Match Col</div></div>
+        </div>
+      </div>
+      <div class="date-pair">
+        <div class="field">
+          <label>No. of Questions</label>
+          <select id="qCount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select>
+        </div>
+        <div class="field">
+          <label>Difficulty</label>
+          <select id="qDiff">
+            <option value="easy">🟢 Easy</option>
+            <option value="mixed" selected>🟡 Mixed</option>
+            <option value="hard">🔴 Hard</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Upload Material (Optional — generate questions from your notes)</label>
+        <div class="upload-zone">
+          <input type="file" id="qFile" accept=".pdf,.jpg,.jpeg,.png,.webp" onchange="fileChg(this,'q')">
+          <div class="uz-ic">📎</div>
+          <div class="uz-tt">Upload notes/chapter to generate questions from it</div>
+          <div class="uz-sub">PDF or Image (optional)</div>
+        </div>
+        <div class="file-chips" id="qChips"></div>
+      </div>
+      <button class="run-btn" id="qBtn" onclick="runQuestions()">🎯 Generate Questions + Answer Key</button>
+      <div class="progress-bar"><div class="pb-fill" id="qPB"></div></div>
+      <div class="result-box" id="qResult">
+        <div class="result-box-hd">❓ Questions & Answer Key</div>
+        <div class="result-content" id="qContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STUDY PLAN ── -->
+  <div class="panel-area" id="panelPlan">
+    <div class="panel-card">
+      <div class="pcard-title">📅 Personalized Study Plan</div>
+      <div class="field"><label>Your Name</label><input type="text" id="planName" placeholder="Your name"></div>
+      <div class="field">
+        <label>Department / Course</label>
+        <select id="planDept">
+          <option value="12th Science PCM">12th Science – PCM</option>
+          <option value="12th Science PCB">12th Science – PCB</option>
+          <option value="12th Commerce">12th Commerce</option>
+          <option value="BSc IT Semester 3" selected>BSc IT – Semester 3</option>
+          <option value="BSc IT Semester 4">BSc IT – Semester 4</option>
+          <option value="B.Com Semester 5">B.Com – Semester 5</option>
+          <option value="B.Tech CSE Semester 5">B.Tech CSE – Semester 5</option>
+          <option value="B.Tech CSE Semester 6">B.Tech CSE – Semester 6</option>
+          <option value="B.Tech Mech Semester 4">B.Tech Mech – Semester 4</option>
+          <option value="B.Pharm Semester 4">Pharmacy – Semester 4</option>
+          <option value="Nursing Year 2">Nursing – Year 2</option>
+        </select>
+      </div>
+      <div class="field"><label>Subjects to Cover (comma-separated)</label><input type="text" id="planSubjects" placeholder="e.g. DBMS, Data Structures, Python, AI"></div>
+      <div class="date-pair">
+        <div class="field"><label>Start Date</label><input type="date" id="planStart"></div>
+        <div class="field"><label>Exam Date</label><input type="date" id="planExam"></div>
+      </div>
+      <div class="field">
+        <label>Hours Available per Day</label>
+        <select id="planHours">
+          <option value="2">2 hrs/day</option><option value="3">3 hrs/day</option>
+          <option value="4" selected>4 hrs/day</option><option value="5">5 hrs/day</option>
+          <option value="6">6 hrs/day</option><option value="8">8 hrs/day (Exam mode)</option>
+        </select>
+      </div>
+      <div class="field"><label>Weak Topics (optional)</label><input type="text" id="planWeak" placeholder="e.g. SQL Joins, Normalization, Trees"></div>
+      <div class="field"><label>Additional Notes for SMRITI</label><textarea id="planNotes" style="min-height:70px" placeholder="Exam pattern, current preparation level, anything else..."></textarea></div>
+      <button class="run-btn" style="background:#059669" id="planBtn" onclick="runPlan()">📅 Generate My Study Plan</button>
+      <div class="progress-bar"><div class="pb-fill" id="planPB"></div></div>
+      <div class="result-box" id="planResult" style="border-color:#BBF7D0;background:#ECFDF5">
+        <div class="result-box-hd" style="color:#059669">📅 Your Personalized Study Plan</div>
+        <div class="result-content" id="planContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EXPLAIN CONCEPT ── -->
+  <div class="panel-area" id="panelExplain">
+    <div class="panel-card">
+      <div class="pcard-title">🔬 Explain Concept</div>
+      <div class="field">
+        <label>Quick Picks</label>
+        <div class="concept-chips">
+          <span class="cc" onclick="pickC(this)">Newton's Laws</span>
+          <span class="cc" onclick="pickC(this)">Ohm's Law & Circuits</span>
+          <span class="cc" onclick="pickC(this)">Thermodynamics Laws</span>
+          <span class="cc" onclick="pickC(this)">DNA Replication</span>
+          <span class="cc" onclick="pickC(this)">Organic Reactions (SN1 SN2)</span>
+          <span class="cc" onclick="pickC(this)">Binary Trees & BST</span>
+          <span class="cc" onclick="pickC(this)">TCP/IP Model</span>
+          <span class="cc" onclick="pickC(this)">SQL Joins</span>
+          <span class="cc" onclick="pickC(this)">Laplace Transform</span>
+          <span class="cc" onclick="pickC(this)">Bernoulli's Equation</span>
+          <span class="cc" onclick="pickC(this)">BEP Analysis</span>
+          <span class="cc" onclick="pickC(this)">Pharmacokinetics ADME</span>
+          <span class="cc" onclick="pickC(this)">GST Structure India</span>
+          <span class="cc" onclick="pickC(this)">Nursing Care Plans</span>
+        </div>
+      </div>
+      <div class="field"><label>Concept to Explain</label><input type="text" id="explainConcept" placeholder="e.g. How does DBMS Normalization work?"></div>
+      <div class="field">
+        <label>Your Department</label>
+        <select id="explainDept">
+          <option value="12th Science">12th Science (CBSE/HSC)</option>
+          <option value="12th Commerce">12th Commerce</option>
+          <option value="BSc IT / BCA" selected>BSc IT / BCA</option>
+          <option value="B.Tech Engineering">B.Tech Engineering</option>
+          <option value="B.Com Commerce">B.Com / Commerce</option>
+          <option value="Pharmacy">Pharmacy (B.Pharm)</option>
+          <option value="Nursing">Nursing / GNM</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Explanation Style</label>
+        <select id="explainStyle">
+          <option value="simple">🟢 Simple — Like I'm a beginner</option>
+          <option value="student" selected>🎓 Student — With examples</option>
+          <option value="exam">📝 Exam — Formulas + points to remember</option>
+          <option value="deep">🔬 Deep Dive — Full technical</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Upload Diagram / Question Image (Optional)</label>
+        <div class="upload-zone">
+          <input type="file" id="exFile" accept=".pdf,.jpg,.jpeg,.png,.webp" onchange="fileChg(this,'ex')">
+          <div class="uz-ic">🖼️</div>
+          <div class="uz-tt">Upload a diagram, question, or notes image</div>
+          <div class="uz-sub">SMRITI will explain from your image directly</div>
+        </div>
+        <div class="file-chips" id="exChips"></div>
+      </div>
+      <button class="run-btn" style="background:#0891B2" id="exBtn" onclick="runExplain()">🔬 Explain This Concept</button>
+      <div class="progress-bar"><div class="pb-fill" id="exPB"></div></div>
+      <div class="result-box" id="exResult" style="border-color:#BAE6FD;background:#EFF6FF">
+        <div class="result-box-hd" style="color:#0891B2">🔬 Concept Explanation</div>
+        <div class="result-content" id="exContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat input bar -->
+  <div class="chat-input-wrap" id="chatInputWrap">
+    <div class="upload-strip" id="uploadStrip"></div>
+    <div class="chat-row">
+      <textarea class="chat-inp" id="chatInp"
+        placeholder="Ask SMRITI anything — any subject, any topic, any language..."
+        rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"
+        oninput="autoResize(this)"></textarea>
+      <div class="tool-btn" title="Attach Image 📷">📷<input type="file" accept="image/*" onchange="attachImg(this)"></div>
+      <div class="tool-btn" title="Attach PDF 📄">📄<input type="file" accept=".pdf" onchange="attachPdf(this)"></div>
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">➤</button>
+    </div>
+    <div style="font-size:.67rem;color:var(--g4);margin-top:5px;text-align:center">Shift+Enter for new line &nbsp;•&nbsp; Upload images or PDFs of questions for SMRITI to read</div>
+  </div>
+</div><!-- end main -->
+</div><!-- end body -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── AUTH / NAV ──
+function getU(){try{return JSON.parse(localStorage.getItem('sakshar_current')||'null')}catch{return null}}
+var U=getU();
+(function(){
+  var el=document.getElementById('navl');
+  if(!U){el.innerHTML='<a href="login.html" class="nb pri">Login</a>';return;}
+  var av=(U.fname||'S')[0].toUpperCase();
+  el.innerHTML='<a href="dashboard.html" class="nb">Dashboard</a>'+
+    '<a href="resources.html" class="nb">📚 Resources</a>'+
+    '<a href="smriti.html" class="nb on">🤖 SMRITI AI</a>'+
+    '<a href="notes.html" class="nb">📝 Notes</a>'+
+    '<div style="display:flex;align-items:center;gap:7px;margin-left:4px">'+
+    '<div class="nav-av">'+av+'</div>'+
+    '<button class="lo" onclick="localStorage.removeItem(\'sakshar_current\');location.href=\'login.html\'">Logout</button></div>';
+  var pn=document.getElementById('planName');
+  if(pn&&U.fname)pn.value=U.fname+(U.lname?' '+U.lname:'');
+})();
+
+// ── MODES ──
+var currentMode='doubt';
+var MODES={
+  doubt:    {icon:'💬',title:'Ask a Doubt',      sub:'Chat with SMRITI. Upload images or PDFs of your questions for instant help.',ibg:'#FFF3EB'},
+  summarize:{icon:'📋',title:'Summarize Notes',  sub:'Paste your notes or upload a PDF/image — get crisp exam-ready summaries.',   ibg:'#EBF3FF'},
+  questions:{icon:'❓',title:'Generate Questions',sub:'Auto-generate MCQ, Short, Long answer questions with a full answer key.',     ibg:'#F3EEFF'},
+  plan:     {icon:'📅',title:'Study Plan',        sub:'Enter your exam date & subjects — get a day-by-day personalised schedule.',  ibg:'#ECFDF5'},
+  explain:  {icon:'🔬',title:'Explain Concept',   sub:'Deep explanations with step-by-step examples, formulas, and exam tips.',     ibg:'#EFF6FF'},
+};
+function setMode(m){
+  currentMode=m;
+  document.querySelectorAll('.mode-btn').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('mb-'+m).classList.add('on');
+  var md=MODES[m];
+  document.getElementById('modeHdIc').textContent=md.icon;
+  document.getElementById('modeHdIc').style.background=md.ibg;
+  document.getElementById('modeHdTitle').textContent=md.title;
+  document.getElementById('modeHdSub').textContent=md.sub;
+  document.getElementById('chatArea').className='chat-area'+(m==='doubt'?'':' hidden');
+  document.getElementById('chatInputWrap').style.display=m==='doubt'?'':'none';
+  ['Summarize','Questions','Plan','Explain'].forEach(function(p){
+    document.getElementById('panel'+p).className='panel-area'+(m===p.toLowerCase()?' visible':'');
+  });
+}
+
+// ── CHAT ──
+var chatHistory=[];
+var pendingImgs=[];
+var pendingPdfs=[];
+
+function initChat(){
+  var ca=document.getElementById('chatArea');
+  ca.innerHTML='';
+  addAIMsg("Namaste! 🙏 I'm **SMRITI** — your AI study partner from SAKSHAR.\n\nI can help you with any subject:\n• 🔬 12th Science — Physics, Chemistry, Biology, Maths\n• 💻 BSc IT / BCA — DBMS, Data Structures, Networks, Python\n• ⚙️ B.Tech — All branches, all semesters\n• 📊 B.Com / Commerce — Accounts, Tax, Finance\n• 💊 Pharmacy — Pharmacology, Pharmaceutics\n• 🏥 Nursing — Anatomy, Medical-Surgical\n\n📷 You can also **upload images or PDFs** of your questions!\n\nWhat would you like to study today?");
+}
+
+function addAIMsg(text){
+  var ca=document.getElementById('chatArea');
+  var d=document.createElement('div');
+  d.className='msg ai';
+  d.innerHTML='<div style="display:flex;align-items:flex-end;gap:8px">'+
+    '<div class="ai-av">S</div>'+
+    '<div class="bubble">'+fmtMd(text)+'</div></div>'+
+    '<div class="msg-meta">SMRITI • just now</div>';
+  ca.appendChild(d);ca.scrollTop=ca.scrollHeight;
+}
+
+function addUserMsg(text,imgs,pdfs){
+  var ca=document.getElementById('chatArea');
+  var d=document.createElement('div');d.className='msg user';
+  var c='';
+  (imgs||[]).forEach(function(i){c+='<img src="'+i.data+'" class="img-prev" alt="img">';});
+  (pdfs||[]).forEach(function(p){c+='<div class="file-badge">📄 '+escH(p.name)+'</div>';});
+  if(text)c+='<div>'+escH(text)+'</div>';
+  d.innerHTML='<div class="bubble">'+c+'</div><div class="msg-meta">You • just now</div>';
+  ca.appendChild(d);ca.scrollTop=ca.scrollHeight;
+}
+
+function addTyping(){
+  var ca=document.getElementById('chatArea');
+  var d=document.createElement('div');d.className='msg ai';d.id='typing-msg';
+  d.innerHTML='<div style="display:flex;align-items:flex-end;gap:8px">'+
+    '<div class="ai-av">S</div>'+
+    '<div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>';
+  ca.appendChild(d);ca.scrollTop=ca.scrollHeight;
+}
+function rmTyping(){var t=document.getElementById('typing-msg');if(t)t.remove();}
+
+async function sendMsg(){
+  var inp=document.getElementById('chatInp');
+  var text=inp.value.trim();
+  if(!text&&!pendingImgs.length&&!pendingPdfs.length)return;
+  var imgs=[...pendingImgs],pdfs=[...pendingPdfs];
+  addUserMsg(text,imgs,pdfs);
+  inp.value='';inp.style.height='';
+  pendingImgs=[];pendingPdfs=[];
+  document.getElementById('uploadStrip').innerHTML='';
+  document.getElementById('sendBtn').disabled=true;
+  addTyping();
+
+  var content=[];
+  imgs.forEach(function(i){content.push({type:'image',source:{type:'base64',media_type:i.type,data:i.data.split(',')[1]}});});
+  pdfs.forEach(function(p){content.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:p.data.split(',')[1]}});});
+  if(text)content.push({type:'text',text:text});
+  chatHistory.push({role:'user',content:content.length===1&&content[0].type==='text'?text:content});
+
+  var SYS='You are SMRITI, an expert academic AI assistant for Indian students on the SAKSHAR education platform. You help students across all levels: 12th Science/Commerce/Arts (CBSE, Maharashtra HSC), BSc IT/BCA, B.Com, BA, B.Tech (CSE, Mechanical, Civil), Pharmacy (B.Pharm), and Nursing/GNM/ANM. Provide clear, accurate, exam-focused explanations. Use bullet points, numbered steps, and proper formatting. Include relevant formulas. Always relate answers to Indian university/board exam patterns. Be encouraging and supportive in a warm, friendly tone.';
+
+  try{
+    var res=await callAPI(chatHistory.slice(-16),SYS,1500);
+    rmTyping();
+    chatHistory.push({role:'assistant',content:res});
+    addAIMsg(res);
+  }catch(e){
+    rmTyping();
+    var msg = e.message.includes('No API key') 
+      ? '🔑 **API Key needed!**\n\nTo use SMRITI locally:\n1. Go to platform.openai.com/api-keys\n2. Create a free account\n3. Copy your API key\n4. Paste it in the sidebar → Save & Connect\n\nYour key is stored only in your browser.'
+      : '⚠️ Error: '+e.message+'\n\nPlease try again.';
+    addAIMsg(msg);
+  }
+  document.getElementById('sendBtn').disabled=false;
+}
+
+function quickQ(q){setMode('doubt');setTimeout(function(){document.getElementById('chatInp').value=q;sendMsg();},50);}
+
+// ── FILE ATTACHMENTS (chat) ──
+function attachImg(input){
+  if(!input.files[0])return;
+  var f=input.files[0];
+  var r=new FileReader();
+  r.onload=function(e){pendingImgs.push({data:e.target.result,type:f.type,name:f.name});renderStrip();};
+  r.readAsDataURL(f);
+}
+function attachPdf(input){
+  if(!input.files[0])return;
+  var f=input.files[0];
+  var r=new FileReader();
+  r.onload=function(e){pendingPdfs.push({data:e.target.result,name:f.name});renderStrip();};
+  r.readAsDataURL(f);
+}
+function renderStrip(){
+  var s=document.getElementById('uploadStrip');s.innerHTML='';
+  pendingImgs.forEach(function(img,i){s.innerHTML+='<span class="img-chip">🖼️ '+escH(img.name)+' <button onclick="pendingImgs.splice('+i+',1);renderStrip()">×</button></span>';});
+  pendingPdfs.forEach(function(pdf,i){s.innerHTML+='<span class="img-chip">📄 '+escH(pdf.name)+' <button onclick="pendingPdfs.splice('+i+',1);renderStrip()">×</button></span>';});
+}
+
+// ── PANEL FILE HANDLING ──
+var pFiles={sum:null,q:null,ex:null};
+function fileChg(inp,p){
+  if(!inp.files[0])return;
+  pFiles[p]=inp.files[0];
+  document.getElementById(p+'Chips').innerHTML='<div class="fchip">'+(inp.files[0].type==='application/pdf'?'📄':'🖼️')+' '+escH(inp.files[0].name)+'<button onclick="pFiles[\''+p+'\']=null;document.getElementById(\''+p+'Chips\').innerHTML=\'\'">×</button></div>';
+}
+
+function readFile(file){
+  return new Promise(function(res){
+    if(!file){res(null);return;}
+    var r=new FileReader();
+    r.onload=function(e){res({data:e.target.result,type:file.type,name:file.name});};
+    r.readAsDataURL(file);
+  });
+}
+
+// ── SUMMARIZE ──
+async function runSummarize(){
+  var text=document.getElementById('sumText').value.trim();
+  var subj=document.getElementById('sumSubject').value.trim();
+  var style=document.getElementById('sumStyle').value;
+  var file=pFiles['sum'];
+  if(!text&&!file){toast('Please paste notes or upload a file');return;}
+  setBusy('sumBtn',true);animPB('sumPB');
+  document.getElementById('sumResult').classList.remove('visible');
+  var smap={bullet:'clear bullet points with key terms bolded, exam-ready format',short:'a concise paragraph summary under 200 words',detailed:'a detailed summary with examples and sub-headings',flashcard:'flashcard Q&A format: Q: [question] A: [answer] for each key concept'};
+  var content=[];
+  if(file){var fd=await readFile(file);if(fd){content.push(fd.type==='application/pdf'?{type:'document',source:{type:'base64',media_type:'application/pdf',data:fd.data.split(',')[1]}}:{type:'image',source:{type:'base64',media_type:fd.type,data:fd.data.split(',')[1]}});}}
+  content.push({type:'text',text:'Summarize the following academic notes'+(subj?' for the topic: '+subj:'')+' as '+smap[style]+'. Focus on exam-relevant points, key definitions, formulas, and important concepts for Indian university students.\n\n'+(text||'[Please summarize the uploaded file above]')});
+  try{
+    var res=await callAPI([{role:'user',content:content}],'You are SMRITI, an academic summarization expert for Indian students. Format clearly with sections, bullet points, and highlighted key terms.',2000);
+    stopPB('sumPB');document.getElementById('sumContent').innerHTML=fmtMd(res);document.getElementById('sumResult').classList.add('visible');
+  }catch(e){stopPB('sumPB');toast('Error: '+e.message);}
+  setBusy('sumBtn',false);
+}
+
+// ── QUESTIONS ──
+var selQT=['mcq','short','long'];
+function toggleQT(t){var i=selQT.indexOf(t);var c=document.getElementById('qt-'+t);if(i>=0){selQT.splice(i,1);c.classList.remove('sel');}else{selQT.push(t);c.classList.add('sel');}}
+async function runQuestions(){
+  var subj=document.getElementById('qSubject').value.trim();
+  var dept=document.getElementById('qDept').value;
+  var count=document.getElementById('qCount').value;
+  var diff=document.getElementById('qDiff').value;
+  var file=pFiles['q'];
+  if(!subj&&!file){toast('Enter a subject/topic or upload material');return;}
+  if(!selQT.length){toast('Select at least one question type');return;}
+  setBusy('qBtn',true);animPB('qPB');
+  document.getElementById('qResult').classList.remove('visible');
+  var tmap={mcq:'Multiple Choice Questions (4 options A/B/C/D with correct answer marked)',short:'Short Answer questions (2-3 lines each)',long:'Long Answer / Essay questions (detailed)',truefalse:'True or False statements with answer',fillblanks:'Fill in the Blanks sentences with answers',match:'Match the Following (Column A vs Column B)'};
+  var types=selQT.map(function(t){return tmap[t];}).join('; ');
+  var content=[];
+  if(file){var fd=await readFile(file);if(fd){content.push(fd.type==='application/pdf'?{type:'document',source:{type:'base64',media_type:'application/pdf',data:fd.data.split(',')[1]}}:{type:'image',source:{type:'base64',media_type:fd.type,data:fd.data.split(',')[1]}});}}
+  content.push({type:'text',text:'Generate '+count+' '+diff+'-difficulty exam questions for: '+subj+' ('+dept+'). Include these types: '+types+'. Number each question clearly. After ALL questions, add a complete ANSWER KEY section. Match Indian university/board exam pattern.'});
+  try{
+    var res=await callAPI([{role:'user',content:content}],'You are SMRITI, an expert question paper generator for Indian university students. Format questions clearly with proper numbering, marks in brackets [1M][2M][5M], and a separate Answer Key.',2000);
+    stopPB('qPB');document.getElementById('qContent').innerHTML=fmtMd(res);document.getElementById('qResult').classList.add('visible');
+  }catch(e){stopPB('qPB');toast('Error: '+e.message);}
+  setBusy('qBtn',false);
+}
+
+// ── STUDY PLAN ──
+async function runPlan(){
+  var exam=document.getElementById('planExam').value;
+  if(!exam){toast('Please enter your exam date');return;}
+  var name=document.getElementById('planName').value||'Student';
+  var dept=document.getElementById('planDept').value;
+  var subs=document.getElementById('planSubjects').value;
+  var start=document.getElementById('planStart').value;
+  var hrs=document.getElementById('planHours').value;
+  var weak=document.getElementById('planWeak').value;
+  var notes=document.getElementById('planNotes').value;
+  setBusy('planBtn',true);animPB('planPB');
+  document.getElementById('planResult').classList.remove('visible');
+  var prompt='Create a detailed personalised study plan for '+name+' studying '+dept+'.'+
+    (subs?'\nSubjects to cover: '+subs:'')+
+    (start?'\nStudy start date: '+start:'')+
+    '\nExam date: '+exam+
+    '\nAvailable study time: '+hrs+' hours per day'+
+    (weak?'\nWeak topics (allocate extra time): '+weak:'')+
+    (notes?'\nExtra context: '+notes:'')+
+    '\n\nProvide: (1) A week-by-week schedule table, (2) Daily topic plan for each week, (3) Revision and mock test days, (4) Tips for weak topics, (5) Last 3-day exam strategy.';
+  try{
+    var res=await callAPI([{role:'user',content:prompt}],'You are SMRITI, an expert academic planner for Indian students. Create practical, achievable study schedules for university and board exams. Use clear tables and structured weekly plans.',2000);
+    stopPB('planPB');document.getElementById('planContent').innerHTML=fmtMd(res);document.getElementById('planResult').classList.add('visible');
+  }catch(e){stopPB('planPB');toast('Error: '+e.message);}
+  setBusy('planBtn',false);
+}
+
+// ── EXPLAIN ──
+function pickC(el){document.querySelectorAll('.cc').forEach(function(c){c.classList.remove('sel');});el.classList.add('sel');document.getElementById('explainConcept').value=el.textContent;}
+async function runExplain(){
+  var concept=document.getElementById('explainConcept').value.trim();
+  var dept=document.getElementById('explainDept').value;
+  var style=document.getElementById('explainStyle').value;
+  var file=pFiles['ex'];
+  if(!concept&&!file){toast('Enter a concept or upload an image');return;}
+  setBusy('exBtn',true);animPB('exPB');
+  document.getElementById('exResult').classList.remove('visible');
+  var smap={simple:'in very simple language with everyday analogies, as if explaining to a complete beginner',student:'with clear step-by-step explanation, real-world examples, and exam tips',exam:'with all formulas, key points to remember, common exam questions, and important terms highlighted',deep:'with complete technical depth, derivations, real applications, and advanced insights'};
+  var content=[];
+  if(file){var fd=await readFile(file);if(fd){content.push(fd.type==='application/pdf'?{type:'document',source:{type:'base64',media_type:'application/pdf',data:fd.data.split(',')[1]}}:{type:'image',source:{type:'base64',media_type:fd.type,data:fd.data.split(',')[1]}});}}
+  content.push({type:'text',text:'Explain: '+concept+'\nFor: '+dept+' student\nStyle: '+smap[style]+'\nInclude: real examples, step-by-step breakdown, exam-relevant points, common mistakes to avoid. End with an "Exam Tips" section.'});
+  try{
+    var res=await callAPI([{role:'user',content:content}],'You are SMRITI, an expert academic tutor for Indian students. Explain concepts clearly with examples relevant to the Indian curriculum. Use headings, bullets, and bold for important terms. Always include Exam Tips.',2000);
+    stopPB('exPB');document.getElementById('exContent').innerHTML=fmtMd(res);document.getElementById('exResult').classList.add('visible');
+  }catch(e){stopPB('exPB');toast('Error: '+e.message);}
+  setBusy('exBtn',false);
+}
+
+// ── API KEY MANAGEMENT ──
+var _apiKey = localStorage.getItem('smriti_api_key') || '';
+function getKey(){return _apiKey;}
+function saveApiKey(){
+  var v = document.getElementById('apiKeyInput').value.trim();
+  if(!v){toast('Please paste your API key first');return;}
+  _apiKey = v;
+  localStorage.setItem('smriti_api_key', v);
+  document.getElementById('keyStatus').textContent = '✅ Key saved!';
+  document.getElementById('keyStatus').style.color = '#4ade80';
+  toast('🔑 API Key saved — SMRITI is ready!');
+}
+(function(){
+  if(_apiKey){
+    document.getElementById('apiKeyInput').value = _apiKey;
+    document.getElementById('keyStatus').textContent = '✅ Connected';
+    document.getElementById('keyStatus').style.color = '#4ade80';
+  }
+})();
+
+// ── CORE API CALL ──
+async function callAPI(messages,system,maxTokens){
+  var key = getKey();
+  if(!key){
+    throw new Error('No API key found. Please add your OpenAI API key in the sidebar.');
+  }
+  // Convert Anthropic-style messages to OpenAI format
+  var oaiMessages = [{role:'system',content:system}];
+  messages.forEach(function(m){
+    if(typeof m.content === 'string'){
+      oaiMessages.push({role:m.role, content:m.content});
+    } else if(Array.isArray(m.content)){
+      // Handle multimodal content
+      var parts = [];
+      m.content.forEach(function(c){
+        if(c.type==='text') parts.push({type:'text',text:c.text});
+        else if(c.type==='image') parts.push({type:'image_url',image_url:{url:'data:'+c.source.media_type+';base64,'+c.source.data}});
+        else if(c.type==='document') parts.push({type:'text',text:'[PDF document attached — please analyze it]'});
+      });
+      oaiMessages.push({role:m.role, content:parts});
+    }
+  });
+  var resp = await fetch('https://api.openai.com/v1/chat/completions',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':'Bearer '+key
+    },
+    body:JSON.stringify({
+      model:'gpt-4o',
+      max_tokens:maxTokens||1000,
+      messages:oaiMessages
+    })
+  });
+  var data = await resp.json();
+  if(data.error) throw new Error(data.error.message);
+  return data.choices[0].message.content;
+}
+
+// ── UTILS ──
+function fmtMd(t){
+  return t
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/^### (.+)$/gm,'<div style="font-family:\'Baloo 2\',cursive;font-weight:700;color:var(--nv);margin:12px 0 4px;font-size:.98rem">$1</div>')
+    .replace(/^## (.+)$/gm,'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:var(--nv);margin:14px 0 5px;font-size:1.05rem">$1</div>')
+    .replace(/^# (.+)$/gm,'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:var(--sf);margin:14px 0 6px;font-size:1.1rem">$1</div>')
+    .replace(/^[•\-] (.+)$/gm,'<div style="padding-left:16px;margin:3px 0">• $1</div>')
+    .replace(/^(\d+)\. (.+)$/gm,'<div style="padding-left:16px;margin:3px 0"><strong>$1.</strong> $2</div>')
+    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+}
+function escH(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,130)+'px';}
+function setBusy(id,v){var b=document.getElementById(id);if(b)b.disabled=v;}
+function animPB(id){var p=document.getElementById(id);if(!p)return;p.style.transition='none';p.style.width='0%';setTimeout(function(){p.style.transition='width 3s ease';p.style.width='85%';},30);}
+function stopPB(id){var p=document.getElementById(id);if(!p)return;p.style.transition='width .2s';p.style.width='100%';setTimeout(function(){p.style.transition='none';p.style.width='0%';},500);}
+var _tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('show');},2800);}
+
+// ── SET DEFAULT DATES ──
+(function(){
+  var today=new Date();
+  var s=document.getElementById('planStart');if(s)s.valueAsDate=today;
+  var e=document.getElementById('planExam');if(e){var ex=new Date(today);ex.setDate(ex.getDate()+30);e.valueAsDate=ex;}
+})();
+
+// ── INIT ──
+initChat();
+</script>
+</body>
+</html>
